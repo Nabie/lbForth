@@ -1,7 +1,5 @@
 \ Nucleus for x86.  Copyright 2014-2015 Lars Brinkhoff.
 
-hex
-
 host also meta also assembler
 
 \ Register allocation.
@@ -32,7 +30,25 @@ host also meta also assembler
    ebx r@ S )# mov,
    eax r> 4 + S )# mov, ;
 
-target
+target also forth definitions
+hex
+
+pe-extern ExitProcess
+pe-extern GetStdHandle
+pe-extern CreateFileA
+pe-extern ReadFile
+pe-extern WriteFile
+pe-extern CloseHandle
+
+pe-import kernel32.dll
+ExitProcess kernel32.dll pe-symbol
+GetStdHandle kernel32.dll pe-symbol
+CreateFileA kernel32.dll pe-symbol
+ReadFile kernel32.dll pe-symbol
+WriteFile kernel32.dll pe-symbol
+CloseHandle kernel32.dll pe-symbol
+
+target pe-code
 
 code sp@
   S push,
@@ -201,29 +217,32 @@ code c@
    next,
 end-code
 
+also assembler
+label written  0 ,
+previous
+
 code emit
    S W mov,
    eax push,
-   ebx push,
-   ecx push,
 
-   4 # eax mov,
-   1 # ebx mov,
-   W ecx mov,
-   1 # edx mov,
-   80 # int,
+   decimal -11 # push, hex \ STD_OUTPUT_HANDLE
+   GetStdHandle indirect-call,
 
-   ecx pop,
-   ebx pop,
+   0 # push,
+   written # push,
+   1 # push,
+   W push,
+   eax push,
+   WriteFile indirect-call,
+
    eax pop,
    4 # S add,
    next,
 end-code
 
 code bye ( ... -- <no return> )
-   1 # eax mov,
-   0 # ebx mov,
-   80 # int,
+   0 # push,
+   ExitProcess indirect-call,
 end-code
 
 also assembler
