@@ -271,9 +271,9 @@ defer parsed
    2r> 2 restore-input abort" Bad restore-input" ;
 
 [defined] rp! [if]
-  0 constant r/o
-  577 constant w/o
-  578 constant r/w
+  : r/o   2147483648 3 ; \ generic-read open-existing
+  : w/o   1073741824 2 ; \ generic-write create-always
+  : r/w   3221225472 4 ; \ generic-read/write open-always
 [else]
   : r/o   s" r" drop ;
 [then]
