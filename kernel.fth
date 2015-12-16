@@ -78,7 +78,7 @@ forward: <
 : count    dup 1+ swap c@ ;
 
 : i    r> r@ swap >r ;
-: cr   10 emit ;
+: cr   13 emit 10 emit ;
 : type   ?dup if bounds do i c@ emit loop else drop then ;
 
 \ Put the xt inside the definition of EXECUTE, overwriting the last noop.
