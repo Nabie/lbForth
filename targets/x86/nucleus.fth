@@ -250,30 +250,36 @@ also assembler
    100 allot
 previous
 
-code open-file ( addr u mode -- fileid ior )
+code open-file ( addr u desired-access creation-disposition -- fileid ior )
+   S ebx mov,
    eax push,
-   ebx push,
-   ecx push,
-
    esi push,
-   18 S )# esi mov,
+   C ebx )# esi mov,
    tmp edi lea,
-   14 S )# ecx mov,
+   8 ebx )# ecx mov,
    rep, movsb,
    cl edi ) mov,
+
+   0 # push,
+   80 # push,
+   ebx ) eax mov,  eax push,
+   0 # push,
+   0 # push,
+   4 ebx )# eax mov,  eax push,
+   tmp # push,
+   CreateFileA indirect-call,
+
+   ebp ebp xor,
+   -1 # eax cmp,
+   0=, if,
+     eax ebp xchg,
+   then,
+   ebp 8 ebx )# mov,
+   eax C ebx )# mov,
+
    esi pop,
-
-   5 # eax mov,
-   tmp ebx lea,
-   0C S )# ecx mov,
-   octal 644 hex # edx mov,
-   80 # int,
-   10 error-check,
-
-   ecx pop,
-   ebx pop,
    eax pop,
-   4 # esp add,
+   8 # esp add,
    next,
 end-code
 
