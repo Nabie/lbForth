@@ -284,21 +284,30 @@ code open-file ( addr u desired-access creation-disposition -- fileid ior )
 end-code
 
 code read-file ( addr u1 fileid -- u2 ior )
+   S ebx mov,
    eax push,
-   ebx push,
-   ecx push,
 
-   3 # eax mov,
-   0C S )# ebx mov,
-   14 S )# ecx mov,
-   10 S )# edx mov,
-   80 # int,
-   10 error-check,
+   0 # push,
+   written # push,
+   4 ebx )# eax mov,
+   eax push,
+   8 ebx )# eax mov,
+   eax push,
+   ebx ) eax mov,
+   eax push,
+   ReadFile indirect-call,
 
-   ecx pop,
-   ebx pop,
+   W W xor,
+   eax eax test,
+   0=, if,
+     -1 # W mov,
+   then,
+   W 4 ebx )# mov,
+   written W mov,
+   W 8 ebx )# mov,
+
    eax pop,
-   W pop,
+   4 # esp add,
    next,
 end-code
 
