@@ -322,16 +322,17 @@ code write-file ( addr u1 fileid -- u2 ior )
 end-code
 
 code close-file ( fileid -- ior )
+   S ) W mov,
    eax push,
-   ebx push,
-
-   6 # eax mov,
-   8 S )# ebx mov,
-   80 # int,
-   eax 8 S )# mov,
-
-   ebx pop,
+   W push,
+   CloseHandle indirect-call,
+   W W xor,
+   eax eax test,
+   0=, if,
+     -1 # W mov,
+   then,
    eax pop,
+   W S ) mov,
    next,
 end-code
 
