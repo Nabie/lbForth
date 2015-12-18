@@ -242,7 +242,9 @@ create string-source   0 -1 ' string-refill ' noop source,
 
 create tib   256 allot
 
-: key   here dup 1 0 read-file abort" Read error"  0= if bye then  c@ ;
+?: get-std-handle   drop 0 ;
+-10 get-std-handle constant stdin
+: key   here dup 1 stdin read-file abort" Read error"  0= if bye then  c@ ;
 
 : terminal-refill   tib 256 bounds do
       key dup 10 = if drop leave then

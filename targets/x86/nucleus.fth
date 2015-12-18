@@ -221,6 +221,14 @@ also assembler
 label written  0 ,
 previous
 
+code get-std-handle ( u1 -- u2 )
+   eax ebx mov,
+   GetStdHandle indirect-call,
+   eax push,
+   ebx eax mov,
+   next,
+end-code
+
 code emit
    S W mov,
    eax push,
