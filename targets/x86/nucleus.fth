@@ -33,6 +33,9 @@ host also meta also assembler
 target also forth definitions
 hex
 
+pe-code
+401000 org
+
 pe-extern ExitProcess
 pe-extern GetStdHandle
 pe-extern CreateFileA
@@ -48,7 +51,7 @@ ReadFile kernel32.dll pe-symbol
 WriteFile kernel32.dll pe-symbol
 CloseHandle kernel32.dll pe-symbol
 
-target pe-code
+target
 
 code sp@
   S push,
