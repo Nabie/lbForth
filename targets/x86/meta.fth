@@ -179,7 +179,7 @@ here
    17000 cells allot  here ' limit >body !
    2000 cells allot  here ' sp0 >body !
    256 cells allot  here ' rp0 >body !
-here - dup allot negate elf-extra-bytes
+here - dup allot negate pe-extra-bytes
 
 only forth also meta also t-words resolve-all-forward-refs
 
